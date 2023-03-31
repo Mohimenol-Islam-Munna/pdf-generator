@@ -16,9 +16,11 @@ app.get("/read-file", async (req, res) => {
   // Create a new page
   const page = await browser.newPage();
 
+  await page.goto("https://www.daraz.com.bd/#hp-just-for-you");
+
   //Get HTML content from HTML file
-  const html = fs.readFileSync(`${__dirname}/template/home.html`, "utf-8");
-  await page.setContent(html, { waitUntil: "domcontentloaded" });
+  // const html = fs.readFileSync(`${__dirname}/template/home.html`, "utf-8");
+  // await page.setContent(html, { waitUntil: "domcontentloaded" });
 
   //To reflect CSS used for screens instead of print
   await page.emulateMediaType("screen");
@@ -26,7 +28,7 @@ app.get("/read-file", async (req, res) => {
   // Downlaod the PDF
   const pdf = await page.pdf({
     path: "result.pdf",
-    margin: { top: "100px", right: "50px", bottom: "100px", left: "50px" },
+    // margin: { top: "100px", right: "50px", bottom: "100px", left: "50px" },
     printBackground: true,
     format: "A4",
     displayHeaderFooter: true,
