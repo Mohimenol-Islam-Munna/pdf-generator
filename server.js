@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
   res.sendFile(`${__dirname}/template/home.html`);
 });
 
-app.get("/read-file", async (req, res) => {
+app.post("/read-file", async (req, res) => {
   // Create a browser instance
   const browser = await puppeteer.launch();
 
@@ -27,18 +27,20 @@ app.get("/read-file", async (req, res) => {
 
   // Downlaod the PDF
   const pdf = await page.pdf({
-    path: "result.pdf",
-    margin: { top: "100px", right: "50px", bottom: "100px", left: "50px" },
-    printBackground: true,
+    // path: "result.pdf",
+    // margin: { top: "100px", right: "50px", bottom: "100px", left: "50px" },
+    printBackground: false,
     format: "A4",
-    displayHeaderFooter: true,
+    displayHeaderFooter: false,
     footerTemplate: "<h5>Footer Content</h5>",
   });
 
   // Close the browser instance
   await browser.close();
-
-  res.send("pdf");
+  res.setHeader("Content-disposition", "attachment; filename=" + "pdfFileName.pdf");
+  res.setHeader("Content-type", "application/pdf");
+  // res.set("pdfFileName", "pdfFileName");
+  res.send(pdf);
 });
 
 const PORT = 5000;
